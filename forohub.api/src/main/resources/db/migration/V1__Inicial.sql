@@ -36,10 +36,10 @@ CREATE TABLE Topico (
 CREATE TABLE Respuesta (
     idRespuesta BIGINT AUTO_INCREMENT PRIMARY KEY,
     mensaje TEXT NOT NULL,
-    topico BIGINT NOT NULL,
     fechaCreacion TIMESTAMP NOT NULL,
-    autor BIGINT NOT NULL,
     solucion BOOLEAN DEFAULT FALSE,
+    topico BIGINT NOT NULL,
+    autor BIGINT NOT NULL,
     FOREIGN KEY (topico) REFERENCES Topico(idTopico),
     FOREIGN KEY (autor) REFERENCES Usuario(idUsuario)
 );
