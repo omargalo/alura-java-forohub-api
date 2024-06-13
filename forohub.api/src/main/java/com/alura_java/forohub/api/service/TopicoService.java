@@ -33,4 +33,8 @@ public class TopicoService {
     public void eliminarTopico(Long id) {
         topicoRepository.deleteById(id);
     }
+
+    public boolean existsByTituloAndMensaje(String titulo, String mensaje) {
+        return topicoRepository.existsByTituloAndMensaje(titulo, mensaje);
+    }
 }

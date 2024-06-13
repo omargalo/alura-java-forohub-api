@@ -26,10 +26,10 @@ CREATE TABLE topico (
     mensaje TEXT NOT NULL,
     fecha_creacion TIMESTAMP NOT NULL,
     status VARCHAR(50) NOT NULL,
-    autor BIGINT NOT NULL,
-    curso BIGINT NOT NULL,
-    FOREIGN KEY (autor) REFERENCES usuario(id_usuario),
-    FOREIGN KEY (curso) REFERENCES curso(id_curso)
+    autor_id BIGINT NOT NULL,
+    curso_id BIGINT NOT NULL,
+    FOREIGN KEY (autor_id) REFERENCES usuario(id_usuario),
+    FOREIGN KEY (curso_id) REFERENCES curso(id_curso)
 );
 
 -- Create table respuesta
@@ -38,10 +38,10 @@ CREATE TABLE respuesta (
     mensaje TEXT NOT NULL,
     fecha_creacion TIMESTAMP NOT NULL,
     solucion BOOLEAN DEFAULT FALSE,
-    topico BIGINT NOT NULL,
-    autor BIGINT NOT NULL,
-    FOREIGN KEY (topico) REFERENCES topico(id_topico),
-    FOREIGN KEY (autor) REFERENCES usuario(id_usuario)
+    topico_id BIGINT NOT NULL,
+    autor_id BIGINT NOT NULL,
+    FOREIGN KEY (topico_id) REFERENCES topico(id_topico),
+    FOREIGN KEY (autor_id) REFERENCES usuario(id_usuario)
 );
 
 -- Create table usuario_perfil

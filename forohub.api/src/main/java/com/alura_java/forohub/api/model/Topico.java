@@ -27,19 +27,20 @@ public class Topico {
     private String mensaje;
 
     @NotNull
+    @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
 
     @NotBlank
     private String status;
 
     @ManyToOne
+    @JoinColumn(name = "autor_id")
     @NotNull
-    @JoinColumn(name = "autor")
     private Usuario autor;
 
     @ManyToOne
+    @JoinColumn(name = "curso_id")
     @NotNull
-    @JoinColumn(name = "curso")
     private Curso curso;
 
     @OneToMany(mappedBy = "topico")
