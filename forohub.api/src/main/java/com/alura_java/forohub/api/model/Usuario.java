@@ -16,7 +16,7 @@ import java.util.List;
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idUsuario")
+    @Column(name = "id_usuario")
     private Long idUsuario;
 
     @NotBlank
@@ -31,9 +31,9 @@ public class Usuario {
 
     @ManyToMany
     @JoinTable(
-            name = "UsuarioPerfil",
-            joinColumns = @JoinColumn(name = "idUsuario"),
-            inverseJoinColumns = @JoinColumn(name = "idPerfil")
+            name = "usuario_perfil",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_perfil")
     )
     private List<Perfil> perfiles;
 }

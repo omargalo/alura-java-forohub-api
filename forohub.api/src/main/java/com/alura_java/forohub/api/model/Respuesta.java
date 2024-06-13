@@ -13,15 +13,19 @@ import lombok.AllArgsConstructor;
 public class Respuesta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_respuesta")
     private Long idRespuesta;
 
     private String mensaje;
+    @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
     private Boolean solucion;
 
     @ManyToOne
+    @JoinColumn(name = "topico")
     private Topico topico;
 
     @ManyToOne
+    @JoinColumn(name = "autor")
     private Usuario autor;
 }

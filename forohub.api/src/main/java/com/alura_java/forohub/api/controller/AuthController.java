@@ -3,6 +3,8 @@ package com.alura_java.forohub.api.controller;
 import com.alura_java.forohub.api.model.Usuario;
 import com.alura_java.forohub.api.service.UsuarioService;
 import com.alura_java.forohub.api.util.JwtUtil;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,10 +40,19 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) throws Exception {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        var userDetails = userDetailsService.loadUserByUsername(username);
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) throws Exception {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        var userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
         String token = jwtUtil.generateToken(userDetails.getUsername());
         return ResponseEntity.ok(token);
     }
+}
+
+@Setter
+@Getter
+class LoginRequest {
+    // Getters and setters
+    private String username;
+    private String password;
+
 }

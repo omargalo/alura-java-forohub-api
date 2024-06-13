@@ -17,6 +17,7 @@ import java.util.List;
 public class Topico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_topico")
     private Long idTopico;
 
     @NotBlank
@@ -33,10 +34,12 @@ public class Topico {
 
     @ManyToOne
     @NotNull
+    @JoinColumn(name = "autor")
     private Usuario autor;
 
     @ManyToOne
     @NotNull
+    @JoinColumn(name = "curso")
     private Curso curso;
 
     @OneToMany(mappedBy = "topico")
