@@ -7,9 +7,14 @@ import com.alura_java.forohub.api.model.Curso;
 import com.alura_java.forohub.api.service.TopicoService;
 import com.alura_java.forohub.api.repository.UsuarioRepository;
 import com.alura_java.forohub.api.repository.CursoRepository;
+import com.alura_java.forohub.api.repository.TopicoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +36,9 @@ public class TopicoController {
 
     @Autowired
     private CursoRepository cursoRepository;
+
+    @Autowired
+    private TopicoRepository topicoRepository;
 
     @PostMapping
     public ResponseEntity<Topico> registrarTopico(@Validated @RequestBody TopicoRequest topicoRequest) {
@@ -68,4 +76,25 @@ public class TopicoController {
         logger.debug("Successfully created topic: {}", nuevoTopico);
         return ResponseEntity.ok(nuevoTopico);
     }
+
+    @GetMapping
+    public ResponseEntity<Page<Topico>> listarTopicos(
+            @PageableDefault(size = 10, sort = "fechaCreacion", direction = Sort.Direction.ASC) Pageable pageable,
+            @RequestParam(required = false) String nombreCurso,
+            @RequestParam(required = false) Integer anio
+    ) {
+        Page<Topico> topicos;
+
+        if (nombreCurso != null && anio != null) {
+            topicos = topicoRepository.findByCursoNombreAndFechaCreacionYear(nombreCurso, anio, pageable);
+        } else if (nombreCurso != null) {
+            topicos = topicoRepository.findByCursoNombre(nombreCurso, pageable);
+        } else {
+            topicos = topicoRepository.findAll(pageable);
+        }
+
+        return ResponseEntity.ok(topicos);
+    }
+
+
 }
