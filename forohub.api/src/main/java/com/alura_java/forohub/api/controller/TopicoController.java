@@ -2,6 +2,7 @@ package com.alura_java.forohub.api.controller;
 
 import com.alura_java.forohub.api.dto.TopicoRequest;
 import com.alura_java.forohub.api.model.Topico;
+import com.alura_java.forohub.api.dto.TopicoDTO;
 import com.alura_java.forohub.api.model.Usuario;
 import com.alura_java.forohub.api.model.Curso;
 import com.alura_java.forohub.api.service.TopicoService;
@@ -96,5 +97,24 @@ public class TopicoController {
         return ResponseEntity.ok(topicos);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<TopicoDTO> obtenerTopicoPorId(@PathVariable Long id) {
+        Optional<Topico> topicoOpt = topicoRepository.findById(id);
+        if (topicoOpt.isPresent()) {
+            Topico topico = topicoOpt.get();
+            TopicoDTO topicoDTO = new TopicoDTO(
+                    topico.getIdTopico(),
+                    topico.getTitulo(),
+                    topico.getMensaje(),
+                    topico.getFechaCreacion(),
+                    topico.getStatus(),
+                    topico.getAutor().getNombre(),
+                    topico.getCurso().getNombre()
+            );
+            return ResponseEntity.ok(topicoDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }
