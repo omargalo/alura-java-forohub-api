@@ -3,6 +3,7 @@ package com.alura_java.forohub.api.controller;
 import com.alura_java.forohub.api.dto.TopicoRequest;
 import com.alura_java.forohub.api.model.Topico;
 import com.alura_java.forohub.api.dto.TopicoDTO;
+import com.alura_java.forohub.api.dto.TopicoUpdateDTO;
 import com.alura_java.forohub.api.model.Usuario;
 import com.alura_java.forohub.api.model.Curso;
 import com.alura_java.forohub.api.service.TopicoService;
@@ -114,6 +115,37 @@ public class TopicoController {
             return ResponseEntity.ok(topicoDTO);
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TopicoDTO> actualizarTopico(@PathVariable Long id, @Validated @RequestBody TopicoUpdateDTO topicoUpdateDTO) {
+        Optional<Topico> topicoOpt = topicoRepository.findById(id);
+        if (topicoOpt.isPresent()) {
+            Topico topico = topicoOpt.get();
+            Optional<Curso> cursoOpt = cursoRepository.findById(topicoUpdateDTO.getCursoId());
+            if (cursoOpt.isPresent()) {
+                topico.setTitulo(topicoUpdateDTO.getTitulo());
+                topico.setMensaje(topicoUpdateDTO.getMensaje());
+                topico.setStatus(topicoUpdateDTO.getStatus());
+                topico.setCurso(cursoOpt.get());
+
+                Topico updatedTopico = topicoRepository.save(topico);
+                TopicoDTO topicoDTO = new TopicoDTO(
+                        updatedTopico.getIdTopico(),
+                        updatedTopico.getTitulo(),
+                        updatedTopico.getMensaje(),
+                        updatedTopico.getFechaCreacion(),
+                        updatedTopico.getStatus(),
+                        updatedTopico.getAutor().getNombre(),
+                        updatedTopico.getCurso().getNombre()
+                );
+                return ResponseEntity.ok(topicoDTO);
+            } else {
+                return ResponseEntity.badRequest().build(); // Invalid course ID
+            }
+        } else {
+            return ResponseEntity.notFound().build(); // Topic not found
         }
     }
 
